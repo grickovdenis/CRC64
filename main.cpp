@@ -142,24 +142,7 @@ static const  uint64_t crc64_tab[256] = {
     0x536fa08fdfd90e51ULL, 0x29b7d047efec8728ULL,
 };
 
-/*
- long crc64(FILE* out, FILE* in, long sum)
-{
-    int j = 0;
-    long crc = 0;
-	char s;
 
-	while (!feof(in))
-		{	
-			printf("POTOK 2 ... DONE \n");
-			fscanf(in,"%%",s) ;
-			long byte = s;
-			sum += crc64_tab[(long)crc ^ byte] ^ (crc >> 8);
-			fprintf(out,"%-2s %4s %d","Current sum: ", sum, "\n");
-		}
-	return sum;
-}
-*/
 
  uint64_t crc64(const char *s, int l) {
     int j = 0;
@@ -173,8 +156,6 @@ static const  uint64_t crc64_tab[256] = {
 }
 
 
-
-
  int main (int argc, char* argv[])
 {
     ifstream f;
@@ -184,68 +165,65 @@ static const  uint64_t crc64_tab[256] = {
 	FILE* in2;
 	char* s;
 	char str[550];
-	
+	uint64_t sum;
+	stringstream ss;
+	string s1;
 	
 
 
-out = fopen("out.txt", "w");
+
 in = fopen("in.txt", "r");
 in2 = fopen("in2.txt", "r");
+sum=0;
+while(!feof(in))
+{
+	s = fgets (str,sizeof(str),in);
+	
+	
+	
+	int i=0;
+	while (s[i]!=NULL)
+	i++;
+//	cout << i << endl;
 
-s = fgets (str,sizeof(str),in);
-fprintf(out, s);
-int i=0;
-while (s[i]!=NULL)
-i++;
-cout << i;
 
+	sum+=crc64(s,i);
 
+//	cout << sum << endl;
 }
 
-/*
-int main (int argc, char* argv[])
-{
-	int sum=0;
-	char* res="";
-	FILE* out;
-	FILE* in;
-	FILE* in2;
-	stringstream ss;
-	string s="";
-	ifstream f;
-	ofstream f1;
-
-
-
+fclose(in);
 
 ss << sum;
-s = ss.str();
-
+s1 = ss.str();
 
 f1.open("out.txt");
-f1<<s;
+f1<<s1<<"\n";
+
+//cout<<endl;
+
+s="";
+sum=0;
+s1="";
+while(!feof(in2))
+{
+	s = fgets (str,sizeof(str),in2);
+	int i=0;
+	while (s[i]!=NULL)
+	i++;
+//	cout << i << endl;
+	sum+=crc64(s,i);
+//	cout << sum << endl;
+}
+fclose(in2);
+ss << sum;
+s1 = ss.str();
+f1<<s1<<"\n";
 f1.close();
 
-cout<<endl;
+//cout<<endl;
 
 }
-*/	
-/*
-	out = fopen("out.txt", "w");
-	in = fopen("in.txt", "r");
-	in2 = fopen("in2.txt", "r");
-	
-	ss << sum;
-	s = ss.str();
-	res += s[1];
-	cout << s;
-	fprintf(out, res);
-	
-
-	fclose(in);
-	fclose(out);
-*/
-	//return 0;
 
 
 
