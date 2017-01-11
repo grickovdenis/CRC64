@@ -4,10 +4,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <conio.h>
+#include <sstream>
+#include <fstream>
+#include <math.h>
+#include <stdlib.h>
 
 using namespace std;
 
-static const uint64_t crc64_tab[256] = {
+static const  uint64_t crc64_tab[256] = {
     0x0000000000000000ULL, 0x7ad870c830358979ULL,
     0xf5b0e190606b12f2ULL, 0x8f689158505e9b8bULL,
     0xc038e5739841b68fULL, 0xbae095bba8743ff6ULL,
@@ -138,38 +142,110 @@ static const uint64_t crc64_tab[256] = {
     0x536fa08fdfd90e51ULL, 0x29b7d047efec8728ULL,
 };
 
+/*
  long crc64(FILE* out, FILE* in, long sum)
 {
     int j = 0;
-    uint64_t crc = 0;
+    long crc = 0;
 	char s;
 
 	while (!feof(in))
 		{	
 			printf("POTOK 2 ... DONE \n");
 			fscanf(in,"%%",s) ;
-			uint64_t byte = s;
-			sum += crc64_tab[(uint8_t)crc ^ byte] ^ (crc >> 8);
+			long byte = s;
+			sum += crc64_tab[(long)crc ^ byte] ^ (crc >> 8);
 			fprintf(out,"%-2s %4s %d","Current sum: ", sum, "\n");
 		}
 	return sum;
 }
+*/
 
-int main (int argc, char* argv[])
+ uint64_t crc64(const char *s, int l) {
+    int j = 0;
+    uint64_t crc = 0;
+
+    for (j = 0; j < l; j++) {
+        uint8_t byte = s[j];
+        crc = crc64_tab[(uint8_t)crc ^ byte] ^ (crc >> 8);
+    }
+    return crc;
+}
+
+
+
+
+ int main (int argc, char* argv[])
 {
-	int sum=0;
+    ifstream f;
+	ofstream f1;
 	FILE* out;
 	FILE* in;
 	FILE* in2;
+	char* s;
+	char str[550];
+	
+	
 
 
+out = fopen("out.txt", "w");
+in = fopen("in.txt", "r");
+in2 = fopen("in2.txt", "r");
+
+s = fgets (str,sizeof(str),in);
+fprintf(out, s);
+int i=0;
+while (s[i]!=NULL)
+i++;
+cout << i;
+
+
+}
+
+/*
+int main (int argc, char* argv[])
+{
+	int sum=0;
+	char* res="";
+	FILE* out;
+	FILE* in;
+	FILE* in2;
+	stringstream ss;
+	string s="";
+	ifstream f;
+	ofstream f1;
+
+
+
+
+ss << sum;
+s = ss.str();
+
+
+f1.open("out.txt");
+f1<<s;
+f1.close();
+
+cout<<endl;
+
+}
+*/	
+/*
 	out = fopen("out.txt", "w");
 	in = fopen("in.txt", "r");
 	in2 = fopen("in2.txt", "r");
-	crc64(out, in, sum);
+	
+	ss << sum;
+	s = ss.str();
+	res += s[1];
+	cout << s;
+	fprintf(out, res);
+	
+
 	fclose(in);
 	fclose(out);
+*/
 	//return 0;
-}
+
 
 
